@@ -11602,7 +11602,7 @@ var Bar = function () {
         {x:0, y:0.5},
         {x:0, y:-0.5}
       ];
-        EndPoint.transform(points, arrowData);
+       EndPoint.transform(points, arrowData);
       ctx.beginPath();
       ctx.moveTo(points[0].x, points[0].y);
       ctx.lineTo(points[1].x, points[1].y);
@@ -23258,6 +23258,25 @@ var CachedImage = function () {
     value: function drawImageAtPosition(ctx, factor, left, top, width, height, view) {
       if (!this.initialized()) return; //can't draw image yet not intialized
 
+      var currentTime = new Date();
+      var elapsedTime = (currentTime - this.startTime) * 0.001;
+
+      ctx.save();
+
+      // these are the transforms that are already applied
+      // ctx.translate(view.translation.x, view.translation.y);
+      // ctx.scale(view.scale, view.scale);
+
+      var halfWidth = width / 2;
+      var halfHeight = height / 2;
+
+      var xTrans = view.translation.x;
+      var yTrans = view.translation.y;
+
+      ctx.translate(left + halfWidth, top + halfHeight);
+      ctx.rotate(elapsedTime);
+      ctx.translate(-halfWidth, -halfHeight);
+
       if (factor > 2) {
         // Determine which zoomed image to use
         factor *= 0.5;
@@ -23270,38 +23289,17 @@ var CachedImage = function () {
         if (iterations >= this.NUM_ITERATIONS) {
           iterations = this.NUM_ITERATIONS - 1;
         }
-        //console.log("iterations: " + iterations);
-
 
         var from = this.coordinates[iterations];
-        // ctx.translate((from[2] - from[0]) / 2, (from[1] - from[3]) / 2);
-        ctx.drawImage(this.canvas, from[0], from[1], from[2], from[3], left, top, width, height);
-        // ctx.translate(-(from[2] - from[0]) / 2, -(from[1] - from[3]) / 2);
-      } else {
-        var currentTime = new Date();
-        var elapsedTime = (currentTime - this.startTime) * 0.001;
 
         // Draw image directly
-        ctx.save();
-        // ctx.resetTransform();
 
-        // this is what is normally the transforms in play at this time
-        // ctx.translate(view.translation.x, view.translation.y);
-        // ctx.scale(view.scale, view.scale);
-
-        var halfWidth = width / 2;
-        var halfHeight = height / 2;
-
-        var xTrans = view.translation.x;
-        var yTrans = view.translation.y;
-
-        ctx.translate(left + halfWidth, top + halfHeight);
-        ctx.rotate(elapsedTime);
-        ctx.translate(-halfWidth, -halfHeight);
+        ctx.drawImage(this.canvas, from[0], from[1], from[2], from[3], 0, 0, width, height);
+      } else {
         ctx.drawImage(this.image, 0, 0, width, height);
-
-        ctx.restore();
       }
+
+      ctx.restore();
     }
   }]);
   return CachedImage;
