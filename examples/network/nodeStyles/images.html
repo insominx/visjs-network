@@ -27,7 +27,7 @@
     // Called when the Visualization API is loaded.
     function draw() {
       // Create a data table with nodes.
-      nodes = [];
+      nodes = new vis.DataSet()
 
       // Create a data table with links.
       edges = [];
@@ -38,9 +38,9 @@
         rotation: 45
       }
 
-      nodes.push({id: 1, label: 'Main', image: pipeImage, shape: 'image'});
-      nodes.push({id: 2, label: 'Office', image: pipeImage, shape: 'image'});
-      nodes.push({id: 3, label: 'Wireless', image: pipeImage, shape: 'image'});
+      nodes.add({id: 1, label: 'Main', image: pipeImage, shape: 'image'});
+      nodes.add({id: 2, label: 'Office', image: pipeImage, shape: 'image'});
+      nodes.add({id: 3, label: 'Wireless', image: pipeImage, shape: 'image'});
       edges.push({from: 1, to: 2, length: EDGE_LENGTH_MAIN});
       edges.push({from: 1, to: 3, length: EDGE_LENGTH_MAIN});
 
@@ -51,7 +51,7 @@
       }
 
       for (var i = 4; i <= 7; i++) {
-        nodes.push({id: i, label: 'Computer', image: computerImage, shape: 'image'});
+        nodes.add({id: i, label: 'Computer', image: computerImage, shape: 'image'});
         edges.push({from: 2, to: i, length: EDGE_LENGTH_SUB});
       }
 
@@ -61,22 +61,22 @@
         rotation: 45
       }
 
-      nodes.push({id: 101, label: 'Printer', image: printerImage, shape: 'image'});
+      nodes.add({id: 101, label: 'Printer', image: printerImage, shape: 'image'});
       edges.push({from: 2, to: 101, length: EDGE_LENGTH_SUB});
 
       printerNodeId = nodes.length - 1;
 
-      nodes.push({id: 102, label: 'Laptop', image: DIR + 'Hardware-Laptop-1-icon.png', shape: 'image'});
+      nodes.add({id: 102, label: 'Laptop', image: DIR + 'Hardware-Laptop-1-icon.png', shape: 'image'});
       edges.push({from: 3, to: 102, length: EDGE_LENGTH_SUB});
 
-      nodes.push({id: 103, label: 'network drive', image: DIR + 'Network-Drive-icon.png', shape: 'image'});
+      nodes.add({id: 103, label: 'network drive', image: DIR + 'Network-Drive-icon.png', shape: 'image'});
       edges.push({from: 1, to: 103, length: EDGE_LENGTH_SUB});
 
-      nodes.push({id: 104, label: 'Internet', image: DIR + 'System-Firewall-2-icon.png', shape: 'image'});
+      nodes.add({id: 104, label: 'Internet', image: DIR + 'System-Firewall-2-icon.png', shape: 'image'});
       edges.push({from: 1, to: 104, length: EDGE_LENGTH_SUB});
 
       for (var i = 200; i <= 201; i++ ) {
-        nodes.push({id: i, label: 'Smartphone', image: DIR + 'Hardware-My-PDA-02-icon.png', shape: 'image'});
+        nodes.add({id: i, label: 'Smartphone', image: DIR + 'Hardware-My-PDA-02-icon.png', shape: 'image'});
         edges.push({from: 3, to: i, length: EDGE_LENGTH_SUB});
       }
 
@@ -92,8 +92,12 @@
       requestAnimationFrame(test);
     }
 
-    function test() {
-      network.body.emitter.emit('_requestRedraw');
+    function test(timeElapsed) {
+      // network.body.emitter.emit('_requestRedraw');
+      var printerNode = nodes.get(printerNodeId);
+      printerNode.image.rotation = timeElapsed * 0.002;
+      nodes.update({ id: printerNodeId, image: printerNode.image });
+      // console.log(nodes.get(printerNodeId));
       // var node = nodes.get({
       //   fields: ['id', 'image']
       // });

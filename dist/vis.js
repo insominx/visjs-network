@@ -5703,7 +5703,7 @@ var CircleImageBase = function (_NodeBase) {
           factor = this.imageObj.width / this.width / this.body.view.scale;
         }
 
-        this.imageObj.drawImageAtPosition(ctx, factor, this.left, this.top, this.width, this.height, this.body.view);
+        this.imageObj.drawImageAtPosition(ctx, factor, this.left, this.top, this.width, this.height, this.options.image && this.options.image.rotation || 0);
 
         // disable shadows for other elements.
         this.disableShadow(ctx, values);
@@ -11602,7 +11602,7 @@ var Bar = function () {
         {x:0, y:0.5},
         {x:0, y:-0.5}
       ];
-        EndPoint.transform(points, arrowData);
+       EndPoint.transform(points, arrowData);
       ctx.beginPath();
       ctx.moveTo(points[0].x, points[0].y);
       ctx.lineTo(points[1].x, points[1].y);
@@ -23112,7 +23112,7 @@ $export($export.S + $export.F * !__webpack_require__(13), 'Object', { defineProp
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _classCallCheck2 = __webpack_require__(0);
@@ -23137,172 +23137,164 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
  * @param {Image} image
  */
 var CachedImage = function () {
-    /**
-     * @ignore
-     */
-    function CachedImage() {
-        (0, _classCallCheck3['default'])(this, CachedImage);
+  /**
+   * @ignore
+   */
+  function CachedImage() {
+    (0, _classCallCheck3['default'])(this, CachedImage);
 
-        // eslint-disable-line no-unused-vars
-        this.NUM_ITERATIONS = 4; // Number of items in the coordinates array
+    // eslint-disable-line no-unused-vars
+    this.NUM_ITERATIONS = 4; // Number of items in the coordinates array
 
-        this.image = new Image();
-        this.canvas = document.createElement('canvas');
-        this.startTime = new Date();
+    this.image = new Image();
+    this.canvas = document.createElement('canvas');
+  }
+
+  /**
+   * Called when the image has been successfully loaded.
+   */
+
+
+  (0, _createClass3['default'])(CachedImage, [{
+    key: 'init',
+    value: function init() {
+      if (this.initialized()) return;
+
+      this.src = this.image.src; // For same interface with Image
+      var w = this.image.width;
+      var h = this.image.height;
+
+      // Ease external access
+      this.width = w;
+      this.height = h;
+
+      var h2 = Math.floor(h / 2);
+      var h4 = Math.floor(h / 4);
+      var h8 = Math.floor(h / 8);
+      var h16 = Math.floor(h / 16);
+
+      var w2 = Math.floor(w / 2);
+      var w4 = Math.floor(w / 4);
+      var w8 = Math.floor(w / 8);
+      var w16 = Math.floor(w / 16);
+
+      // Make canvas as small as possible
+      this.canvas.width = 3 * w4;
+      this.canvas.height = h2;
+
+      // Coordinates and sizes of images contained in the canvas
+      // Values per row:  [top x, left y, width, height]
+
+      this.coordinates = [[0, 0, w2, h2], [w2, 0, w4, h4], [w2, h4, w8, h8], [5 * w8, h4, w16, h16]];
+
+      this._fillMipMap();
     }
 
     /**
-     * Called when the image has been successfully loaded.
+     * @return {Boolean} true if init() has been called, false otherwise.
      */
 
+  }, {
+    key: 'initialized',
+    value: function initialized() {
+      return this.coordinates !== undefined;
+    }
 
-    (0, _createClass3['default'])(CachedImage, [{
-        key: 'init',
-        value: function init() {
-            if (this.initialized()) return;
+    /**
+     * Redraw main image in various sizes to the context.
+     *
+     * The rationale behind this is to reduce artefacts due to interpolation
+     * at differing zoom levels.
+     *
+     * Source: http://stackoverflow.com/q/18761404/1223531
+     *
+     * This methods takes the resizing out of the drawing loop, in order to
+     * reduce performance overhead.
+     *
+     * TODO: The code assumes that a 2D context can always be gotten. This is
+     *       not necessarily true! OTOH, if not true then usage of this class
+     *       is senseless.
+     *
+     * @private
+     */
 
-            this.src = this.image.src; // For same interface with Image
-            var w = this.image.width;
-            var h = this.image.height;
+  }, {
+    key: '_fillMipMap',
+    value: function _fillMipMap() {
+      var ctx = this.canvas.getContext('2d');
 
-            // Ease external access
-            this.width = w;
-            this.height = h;
+      // First zoom-level comes from the image
+      var to = this.coordinates[0];
+      ctx.drawImage(this.image, to[0], to[1], to[2], to[3]);
 
-            var h2 = Math.floor(h / 2);
-            var h4 = Math.floor(h / 4);
-            var h8 = Math.floor(h / 8);
-            var h16 = Math.floor(h / 16);
+      // The rest are copy actions internal to the canvas/context
+      for (var iterations = 1; iterations < this.NUM_ITERATIONS; iterations++) {
+        var from = this.coordinates[iterations - 1];
+        var _to = this.coordinates[iterations];
 
-            var w2 = Math.floor(w / 2);
-            var w4 = Math.floor(w / 4);
-            var w8 = Math.floor(w / 8);
-            var w16 = Math.floor(w / 16);
+        ctx.drawImage(this.canvas, from[0], from[1], from[2], from[3], _to[0], _to[1], _to[2], _to[3]);
+      }
+    }
 
-            // Make canvas as small as possible
-            this.canvas.width = 3 * w4;
-            this.canvas.height = h2;
+    /**
+     * Draw the image, using the mipmap if necessary.
+     *
+     * MipMap is only used if param factor > 2; otherwise, original bitmap
+     * is resized. This is also used to skip mipmap usage, e.g. by setting factor = 1
+     *
+     * Credits to 'Alex de Mulder' for original implementation.
+     *
+     * @param {CanvasRenderingContext2D} ctx  context on which to draw zoomed image
+     * @param {Float} factor scale factor at which to draw
+     * @param {number} left
+     * @param {number} top
+     * @param {number} width
+     * @param {number} height
+     */
 
-            // Coordinates and sizes of images contained in the canvas
-            // Values per row:  [top x, left y, width, height]
+  }, {
+    key: 'drawImageAtPosition',
+    value: function drawImageAtPosition(ctx, factor, left, top, width, height, rotation) {
+      if (!this.initialized()) return; //can't draw image yet not intialized
+      ctx.save();
 
-            this.coordinates = [[0, 0, w2, h2], [w2, 0, w4, h4], [w2, h4, w8, h8], [5 * w8, h4, w16, h16]];
+      // these are the transforms that are already applied
+      // ctx.translate(view.translation.x, view.translation.y);
+      // ctx.scale(view.scale, view.scale);
 
-            this._fillMipMap();
+      var halfWidth = width / 2;
+      var halfHeight = height / 2;
+
+      ctx.translate(left + halfWidth, top + halfHeight);
+      ctx.rotate(rotation);
+      ctx.translate(-halfWidth, -halfHeight);
+
+      if (factor > 2) {
+        // Determine which zoomed image to use
+        factor *= 0.5;
+        var iterations = 0;
+        while (factor > 2 && iterations < this.NUM_ITERATIONS) {
+          factor *= 0.5;
+          iterations += 1;
         }
 
-        /**
-         * @return {Boolean} true if init() has been called, false otherwise.
-         */
-
-    }, {
-        key: 'initialized',
-        value: function initialized() {
-            return this.coordinates !== undefined;
+        if (iterations >= this.NUM_ITERATIONS) {
+          iterations = this.NUM_ITERATIONS - 1;
         }
 
-        /**
-         * Redraw main image in various sizes to the context.
-         *
-         * The rationale behind this is to reduce artefacts due to interpolation
-         * at differing zoom levels.
-         *
-         * Source: http://stackoverflow.com/q/18761404/1223531
-         *
-         * This methods takes the resizing out of the drawing loop, in order to
-         * reduce performance overhead.
-         *
-         * TODO: The code assumes that a 2D context can always be gotten. This is
-         *       not necessarily true! OTOH, if not true then usage of this class
-         *       is senseless.
-         *
-         * @private
-         */
+        var from = this.coordinates[iterations];
 
-    }, {
-        key: '_fillMipMap',
-        value: function _fillMipMap() {
-            var ctx = this.canvas.getContext('2d');
+        // Draw image directly
 
-            // First zoom-level comes from the image
-            var to = this.coordinates[0];
-            ctx.drawImage(this.image, to[0], to[1], to[2], to[3]);
+        ctx.drawImage(this.canvas, from[0], from[1], from[2], from[3], 0, 0, width, height);
+      } else {
+        ctx.drawImage(this.image, 0, 0, width, height);
+      }
 
-            // The rest are copy actions internal to the canvas/context
-            for (var iterations = 1; iterations < this.NUM_ITERATIONS; iterations++) {
-                var from = this.coordinates[iterations - 1];
-                var _to = this.coordinates[iterations];
-
-                ctx.drawImage(this.canvas, from[0], from[1], from[2], from[3], _to[0], _to[1], _to[2], _to[3]);
-            }
-        }
-
-        /**
-         * Draw the image, using the mipmap if necessary.
-         *
-         * MipMap is only used if param factor > 2; otherwise, original bitmap
-         * is resized. This is also used to skip mipmap usage, e.g. by setting factor = 1
-         *
-         * Credits to 'Alex de Mulder' for original implementation.
-         *
-         * @param {CanvasRenderingContext2D} ctx  context on which to draw zoomed image
-         * @param {Float} factor scale factor at which to draw
-         * @param {number} left
-         * @param {number} top
-         * @param {number} width
-         * @param {number} height
-         */
-
-    }, {
-        key: 'drawImageAtPosition',
-        value: function drawImageAtPosition(ctx, factor, left, top, width, height, view) {
-            if (!this.initialized()) return; //can't draw image yet not intialized
-
-            var currentTime = new Date();
-            var elapsedTime = (currentTime - this.startTime) * 0.001;
-
-            ctx.save();
-
-            // these are the transforms that are already applied
-            // ctx.translate(view.translation.x, view.translation.y);
-            // ctx.scale(view.scale, view.scale);
-
-            var halfWidth = width / 2;
-            var halfHeight = height / 2;
-
-            var xTrans = view.translation.x;
-            var yTrans = view.translation.y;
-
-            ctx.translate(left + halfWidth, top + halfHeight);
-            ctx.rotate(elapsedTime);
-            ctx.translate(-halfWidth, -halfHeight);
-
-            if (factor > 2) {
-                // Determine which zoomed image to use
-                factor *= 0.5;
-                var iterations = 0;
-                while (factor > 2 && iterations < this.NUM_ITERATIONS) {
-                    factor *= 0.5;
-                    iterations += 1;
-                }
-
-                if (iterations >= this.NUM_ITERATIONS) {
-                    iterations = this.NUM_ITERATIONS - 1;
-                }
-
-                var from = this.coordinates[iterations];
-
-                // Draw image directly
-
-                ctx.drawImage(this.canvas, from[0], from[1], from[2], from[3], 0, 0, width, height);
-            } else {
-                ctx.drawImage(this.image, 0, 0, width, height);
-            }
-
-            ctx.restore();
-        }
-    }]);
-    return CachedImage;
+      ctx.restore();
+    }
+  }]);
+  return CachedImage;
 }();
 
 exports['default'] = CachedImage;
