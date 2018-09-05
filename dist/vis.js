@@ -5703,7 +5703,7 @@ var CircleImageBase = function (_NodeBase) {
           factor = this.imageObj.width / this.width / this.body.view.scale;
         }
 
-        this.imageObj.drawImageAtPosition(ctx, factor, this.left, this.top, this.width, this.height);
+        this.imageObj.drawImageAtPosition(ctx, factor, this.left, this.top, this.width, this.height, this.body.view);
 
         // disable shadows for other elements.
         this.disableShadow(ctx, values);
@@ -23148,6 +23148,7 @@ var CachedImage = function () {
 
     this.image = new Image();
     this.canvas = document.createElement('canvas');
+    this.startTime = new Date();
   }
 
   /**
@@ -23254,7 +23255,7 @@ var CachedImage = function () {
 
   }, {
     key: 'drawImageAtPosition',
-    value: function drawImageAtPosition(ctx, factor, left, top, width, height) {
+    value: function drawImageAtPosition(ctx, factor, left, top, width, height, view) {
       if (!this.initialized()) return; //can't draw image yet not intialized
 
       if (factor > 2) {
@@ -23271,11 +23272,35 @@ var CachedImage = function () {
         }
         //console.log("iterations: " + iterations);
 
+
         var from = this.coordinates[iterations];
+        // ctx.translate((from[2] - from[0]) / 2, (from[1] - from[3]) / 2);
         ctx.drawImage(this.canvas, from[0], from[1], from[2], from[3], left, top, width, height);
+        // ctx.translate(-(from[2] - from[0]) / 2, -(from[1] - from[3]) / 2);
       } else {
+        var currentTime = new Date();
+        var elapsedTime = (currentTime - this.startTime) * 0.001;
+
         // Draw image directly
-        ctx.drawImage(this.image, left, top, width, height);
+        ctx.save();
+        // ctx.resetTransform();
+
+        // this is what is normally the transforms in play at this time
+        // ctx.translate(view.translation.x, view.translation.y);
+        // ctx.scale(view.scale, view.scale);
+
+        var halfWidth = width / 2;
+        var halfHeight = height / 2;
+
+        var xTrans = view.translation.x;
+        var yTrans = view.translation.y;
+
+        ctx.translate(left + halfWidth, top + halfHeight);
+        ctx.rotate(elapsedTime);
+        ctx.translate(-halfWidth, -halfHeight);
+        ctx.drawImage(this.image, 0, 0, width, height);
+
+        ctx.restore();
       }
     }
   }]);
