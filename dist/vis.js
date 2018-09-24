@@ -4,8 +4,8 @@
  *
  * A dynamic, browser-based visualization library.
  *
- * @version 4.23.0
- * @date    2018-09-05
+ * @version 4.23.1
+ * @date    2018-09-24
  *
  * @license
  * Copyright (C) 2011-2017 Almende B.V, http://almende.com
@@ -2656,7 +2656,8 @@ if (typeof window !== 'undefined') {
   var propagating = __webpack_require__(127);
   var Hammer = window['Hammer'] || __webpack_require__(128);
   module.exports = propagating(Hammer, {
-    preventDefault: 'mouse'
+    // this break mousemove on the canvas when the mouse button is down
+    // preventDefault: 'mouse'
   });
 } else {
   module.exports = function () {
@@ -11602,7 +11603,7 @@ var Bar = function () {
         {x:0, y:0.5},
         {x:0, y:-0.5}
       ];
-       EndPoint.transform(points, arrowData);
+        EndPoint.transform(points, arrowData);
       ctx.beginPath();
       ctx.moveTo(points[0].x, points[0].y);
       ctx.lineTo(points[1].x, points[1].y);
