@@ -4,8 +4,8 @@
  *
  * A dynamic, browser-based visualization library.
  *
- * @version 4.23.1
- * @date    2018-09-24
+ * @version 4.23.3
+ * @date    2019-07-02
  *
  * @license
  * Copyright (C) 2011-2017 Almende B.V, http://almende.com
@@ -161,7 +161,7 @@ var _create = __webpack_require__(31);
 
 var _create2 = _interopRequireDefault(_create);
 
-var _keys = __webpack_require__(10);
+var _keys = __webpack_require__(9);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -1809,7 +1809,7 @@ exports.default = function (subClass, superClass) {
 /* 6 */
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.5.7' };
+var core = module.exports = { version: '2.6.9' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -1845,8 +1845,8 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 /***/ (function(module, exports, __webpack_require__) {
 
 var store = __webpack_require__(44)('wks');
-var uid = __webpack_require__(29);
-var Symbol = __webpack_require__(9).Symbol;
+var uid = __webpack_require__(30);
+var Symbol = __webpack_require__(10).Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
 var $exports = module.exports = function (name) {
@@ -1859,6 +1859,12 @@ $exports.store = store;
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = { "default": __webpack_require__(102), __esModule: true };
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -1870,16 +1876,20 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(102), __esModule: true };
-
-/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(9);
+// Thank's IE8 for his funny defineProperty
+module.exports = !__webpack_require__(22)(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+});
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var global = __webpack_require__(10);
 var core = __webpack_require__(6);
 var ctx = __webpack_require__(61);
 var hide = __webpack_require__(19);
@@ -1944,7 +1954,7 @@ module.exports = $export;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject = __webpack_require__(20);
@@ -1952,7 +1962,7 @@ var IE8_DOM_DEFINE = __webpack_require__(62);
 var toPrimitive = __webpack_require__(40);
 var dP = Object.defineProperty;
 
-exports.f = __webpack_require__(13) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = __webpack_require__(11) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
@@ -1963,16 +1973,6 @@ exports.f = __webpack_require__(13) ? Object.defineProperty : function definePro
   if ('value' in Attributes) O[P] = Attributes.value;
   return O;
 };
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(22)(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
 
 
 /***/ }),
@@ -2571,9 +2571,9 @@ module.exports = function (it) {
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(12);
-var createDesc = __webpack_require__(28);
-module.exports = __webpack_require__(13) ? function (object, key, value) {
+var dP = __webpack_require__(13);
+var createDesc = __webpack_require__(29);
+module.exports = __webpack_require__(11) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
 } : function (object, key, value) {
   object[key] = value;
@@ -2688,13 +2688,24 @@ module.exports = Object.keys || function keys(O) {
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 7.1.13 ToObject(argument)
+var defined = __webpack_require__(39);
+module.exports = function (it) {
+  return Object(defined(it));
+};
+
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = true;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = function (bitmap, value) {
@@ -2708,24 +2719,13 @@ module.exports = function (bitmap, value) {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 var id = 0;
 var px = Math.random();
 module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.13 ToObject(argument)
-var defined = __webpack_require__(39);
-module.exports = function (it) {
-  return Object(defined(it));
 };
 
 
@@ -2757,7 +2757,7 @@ var _typeof2 = __webpack_require__(7);
 
 var _typeof3 = _interopRequireDefault(_typeof2);
 
-var _keys = __webpack_require__(10);
+var _keys = __webpack_require__(9);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -4659,7 +4659,7 @@ exports.disablePreventDefaultVertically = function (pinchRecognizer) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(87);
-var global = __webpack_require__(9);
+var global = __webpack_require__(10);
 var hide = __webpack_require__(19);
 var Iterators = __webpack_require__(25);
 var TO_STRING_TAG = __webpack_require__(8)('toStringTag');
@@ -4783,7 +4783,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var shared = __webpack_require__(44)('keys');
-var uid = __webpack_require__(29);
+var uid = __webpack_require__(30);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
@@ -4794,7 +4794,7 @@ module.exports = function (key) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var core = __webpack_require__(6);
-var global = __webpack_require__(9);
+var global = __webpack_require__(10);
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || (global[SHARED] = {});
 
@@ -4802,8 +4802,8 @@ var store = global[SHARED] || (global[SHARED] = {});
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
   version: core.version,
-  mode: __webpack_require__(27) ? 'pure' : 'global',
-  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+  mode: __webpack_require__(28) ? 'pure' : 'global',
+  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
 
 
@@ -4821,7 +4821,7 @@ module.exports = (
 /* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var def = __webpack_require__(12).f;
+var def = __webpack_require__(13).f;
 var has = __webpack_require__(14);
 var TAG = __webpack_require__(8)('toStringTag');
 
@@ -4865,11 +4865,11 @@ exports.f = __webpack_require__(8);
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(9);
+var global = __webpack_require__(10);
 var core = __webpack_require__(6);
-var LIBRARY = __webpack_require__(27);
+var LIBRARY = __webpack_require__(28);
 var wksExt = __webpack_require__(48);
-var defineProperty = __webpack_require__(12).f;
+var defineProperty = __webpack_require__(13).f;
 module.exports = function (name) {
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
@@ -4890,7 +4890,7 @@ exports.f = Object.getOwnPropertySymbols;
 "use strict";
 
 
-var _keys = __webpack_require__(10);
+var _keys = __webpack_require__(9);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -5768,7 +5768,7 @@ var _typeof2 = __webpack_require__(7);
 
 var _typeof3 = _interopRequireDefault(_typeof2);
 
-var _keys = __webpack_require__(10);
+var _keys = __webpack_require__(9);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -7413,8 +7413,8 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(27);
-var $export = __webpack_require__(11);
+var LIBRARY = __webpack_require__(28);
+var $export = __webpack_require__(12);
 var redefine = __webpack_require__(64);
 var hide = __webpack_require__(19);
 var Iterators = __webpack_require__(25);
@@ -7513,7 +7513,7 @@ module.exports = function (fn, that, length) {
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(13) && !__webpack_require__(22)(function () {
+module.exports = !__webpack_require__(11) && !__webpack_require__(22)(function () {
   return Object.defineProperty(__webpack_require__(63)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -7523,7 +7523,7 @@ module.exports = !__webpack_require__(13) && !__webpack_require__(22)(function (
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(21);
-var document = __webpack_require__(9).document;
+var document = __webpack_require__(10).document;
 // typeof document.createElement is 'object' in old IE
 var is = isObject(document) && isObject(document.createElement);
 module.exports = function (it) {
@@ -7567,7 +7567,7 @@ module.exports = function (object, names) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = __webpack_require__(14);
-var toObject = __webpack_require__(30);
+var toObject = __webpack_require__(27);
 var IE_PROTO = __webpack_require__(43)('IE_PROTO');
 var ObjectProto = Object.prototype;
 
@@ -7614,7 +7614,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // most Object methods by ES6 should accept primitives
-var $export = __webpack_require__(11);
+var $export = __webpack_require__(12);
 var core = __webpack_require__(6);
 var fails = __webpack_require__(22);
 module.exports = function (KEY, exec) {
@@ -7643,14 +7643,14 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var pIE = __webpack_require__(32);
-var createDesc = __webpack_require__(28);
+var createDesc = __webpack_require__(29);
 var toIObject = __webpack_require__(18);
 var toPrimitive = __webpack_require__(40);
 var has = __webpack_require__(14);
 var IE8_DOM_DEFINE = __webpack_require__(62);
 var gOPD = Object.getOwnPropertyDescriptor;
 
-exports.f = __webpack_require__(13) ? gOPD : function getOwnPropertyDescriptor(O, P) {
+exports.f = __webpack_require__(11) ? gOPD : function getOwnPropertyDescriptor(O, P) {
   O = toIObject(O);
   P = toPrimitive(P, true);
   if (IE8_DOM_DEFINE) try {
@@ -8739,6 +8739,253 @@ function parseEdge(graph, from) {
 }
 
 /**
+ * As explained in [1], graphviz has limitations for combination of
+ * arrow[head|tail] and dir. If attribute list includes 'dir',
+ * following cases just be supported.
+ *   1. both or none + arrowhead, arrowtail
+ *   2. forward + arrowhead (arrowtail is not affedted)
+ *   3. back + arrowtail (arrowhead is not affected)
+ * [1] https://www.graphviz.org/doc/info/attrs.html#h:undir_note
+ *
+ * This function is called from parseAttributeList() to parse 'dir'
+ * attribute with given 'attr_names' and 'attr_list'.
+ * @param {Object} attr_names  Array of attribute names
+ * @param {Object} attr_list  Array of objects of attribute set
+ * @return {Object} attr_list  Updated attr_list
+ */
+function parseDirAttribute(attr_names, attr_list) {
+  var i;
+  if (attr_names.includes('dir')) {
+    var idx = {}; // get index of 'arrows' and 'dir'
+    idx.arrows = {};
+    for (i = 0; i < attr_list.length; i++) {
+      if (attr_list[i].name === 'arrows') {
+        if (attr_list[i].value.to != null) {
+          idx.arrows.to = i;
+        } else if (attr_list[i].value.from != null) {
+          idx.arrows.from = i;
+        } else {
+          throw newSyntaxError('Invalid value of arrows');
+        }
+      } else if (attr_list[i].name === 'dir') {
+        idx.dir = i;
+      }
+    }
+
+    // first, add default arrow shape if it is not assigned to avoid error
+    var dir_type = attr_list[idx.dir].value;
+    if (!attr_names.includes('arrows')) {
+      if (dir_type === 'both') {
+        attr_list.push({
+          attr: attr_list[idx.dir].attr,
+          name: 'arrows',
+          value: { to: { enabled: true } }
+        });
+        idx.arrows.to = attr_list.length - 1;
+        attr_list.push({
+          attr: attr_list[idx.dir].attr,
+          name: 'arrows',
+          value: { from: { enabled: true } }
+        });
+        idx.arrows.from = attr_list.length - 1;
+      } else if (dir_type === 'forward') {
+        attr_list.push({
+          attr: attr_list[idx.dir].attr,
+          name: 'arrows',
+          value: { to: { enabled: true } }
+        });
+        idx.arrows.to = attr_list.length - 1;
+      } else if (dir_type === 'back') {
+        attr_list.push({
+          attr: attr_list[idx.dir].attr,
+          name: 'arrows',
+          value: { from: { enabled: true } }
+        });
+        idx.arrows.from = attr_list.length - 1;
+      } else if (dir_type === 'none') {
+        attr_list.push({
+          attr: attr_list[idx.dir].attr,
+          name: 'arrows',
+          value: ''
+        });
+        idx.arrows.to = attr_list.length - 1;
+      } else {
+        throw newSyntaxError('Invalid dir type "' + dir_type + '"');
+      }
+    }
+
+    var from_type;
+    var to_type;
+    // update 'arrows' attribute from 'dir'.
+    if (dir_type === 'both') {
+      // both of shapes of 'from' and 'to' are given
+      if (idx.arrows.to && idx.arrows.from) {
+        to_type = attr_list[idx.arrows.to].value.to.type;
+        from_type = attr_list[idx.arrows.from].value.from.type;
+        attr_list[idx.arrows.to] = {
+          attr: attr_list[idx.arrows.to].attr,
+          name: attr_list[idx.arrows.to].name,
+          value: {
+            to: { enabled: true, type: to_type },
+            from: { enabled: true, type: from_type }
+          }
+        };
+        attr_list.splice(idx.arrows.from, 1);
+
+        // shape of 'to' is assigned and use default to 'from'
+      } else if (idx.arrows.to) {
+        to_type = attr_list[idx.arrows.to].value.to.type;
+        from_type = 'arrow';
+        attr_list[idx.arrows.to] = {
+          attr: attr_list[idx.arrows.to].attr,
+          name: attr_list[idx.arrows.to].name,
+          value: {
+            to: { enabled: true, type: to_type },
+            from: { enabled: true, type: from_type }
+          }
+
+          // only shape of 'from' is assigned and use default for 'to'
+        };
+      } else if (idx.arrows.from) {
+        to_type = 'arrow';
+        from_type = attr_list[idx.arrows.from].value.from.type;
+        attr_list[idx.arrows.from] = {
+          attr: attr_list[idx.arrows.from].attr,
+          name: attr_list[idx.arrows.from].name,
+          value: {
+            to: { enabled: true, type: to_type },
+            from: { enabled: true, type: from_type }
+          }
+        };
+      }
+    } else if (dir_type === 'back') {
+      // given both of shapes, but use only 'from'
+      if (idx.arrows.to && idx.arrows.from) {
+        to_type = '';
+        from_type = attr_list[idx.arrows.from].value.from.type;
+        attr_list[idx.arrows.from] = {
+          attr: attr_list[idx.arrows.from].attr,
+          name: attr_list[idx.arrows.from].name,
+          value: {
+            to: { enabled: true, type: to_type },
+            from: { enabled: true, type: from_type }
+          }
+
+          // given shape of 'to', but does not use it
+        };
+      } else if (idx.arrows.to) {
+        to_type = '';
+        from_type = 'arrow';
+        idx.arrows.from = idx.arrows.to;
+        attr_list[idx.arrows.from] = {
+          attr: attr_list[idx.arrows.from].attr,
+          name: attr_list[idx.arrows.from].name,
+          value: {
+            to: { enabled: true, type: to_type },
+            from: { enabled: true, type: from_type }
+          }
+
+          // assign given 'from' shape
+        };
+      } else if (idx.arrows.from) {
+        to_type = '';
+        from_type = attr_list[idx.arrows.from].value.from.type;
+        attr_list[idx.arrows.to] = {
+          attr: attr_list[idx.arrows.from].attr,
+          name: attr_list[idx.arrows.from].name,
+          value: {
+            to: { enabled: true, type: to_type },
+            from: { enabled: true, type: from_type }
+          }
+        };
+      }
+
+      attr_list[idx.arrows.from] = {
+        attr: attr_list[idx.arrows.from].attr,
+        name: attr_list[idx.arrows.from].name,
+        value: {
+          from: {
+            enabled: true,
+            type: attr_list[idx.arrows.from].value.from.type
+          }
+        }
+      };
+    } else if (dir_type === 'none') {
+      var idx_arrow;
+      if (idx.arrows.to) {
+        idx_arrow = idx.arrows.to;
+      } else {
+        idx_arrow = idx.arrows.from;
+      }
+
+      attr_list[idx_arrow] = {
+        attr: attr_list[idx_arrow].attr,
+        name: attr_list[idx_arrow].name,
+        value: ''
+      };
+    } else if (dir_type === 'forward') {
+      // given both of shapes, but use only 'to'
+      if (idx.arrows.to && idx.arrows.from) {
+        to_type = attr_list[idx.arrows.to].value.to.type;
+        from_type = '';
+        attr_list[idx.arrows.to] = {
+          attr: attr_list[idx.arrows.to].attr,
+          name: attr_list[idx.arrows.to].name,
+          value: {
+            to: { enabled: true, type: to_type },
+            from: { enabled: true, type: from_type }
+          }
+
+          // assign given 'to' shape
+        };
+      } else if (idx.arrows.to) {
+        to_type = attr_list[idx.arrows.to].value.to.type;
+        from_type = '';
+        attr_list[idx.arrows.to] = {
+          attr: attr_list[idx.arrows.to].attr,
+          name: attr_list[idx.arrows.to].name,
+          value: {
+            to: { enabled: true, type: to_type },
+            from: { enabled: true, type: from_type }
+          }
+
+          // given shape of 'from', but does not use it
+        };
+      } else if (idx.arrows.from) {
+        to_type = 'arrow';
+        from_type = '';
+        idx.arrows.to = idx.arrows.from;
+        attr_list[idx.arrows.to] = {
+          attr: attr_list[idx.arrows.to].attr,
+          name: attr_list[idx.arrows.to].name,
+          value: {
+            to: { enabled: true, type: to_type },
+            from: { enabled: true, type: from_type }
+          }
+        };
+      }
+
+      attr_list[idx.arrows.to] = {
+        attr: attr_list[idx.arrows.to].attr,
+        name: attr_list[idx.arrows.to].name,
+        value: {
+          to: {
+            enabled: true,
+            type: attr_list[idx.arrows.to].value.to.type
+          }
+        }
+      };
+    } else {
+      throw newSyntaxError('Invalid dir type "' + dir_type + '"');
+    }
+
+    // remove 'dir' attribute no need anymore
+    attr_list.splice(idx.dir, 1);
+  }
+  return attr_list;
+}
+
+/**
  * Parse a set with attributes,
  * for example [label="1.000", shape=solid]
  * @return {Object | null} attr
@@ -8770,6 +9017,7 @@ function parseAttributeList() {
     diamond: 'diamond',
     tee: 'bar',
     vee: 'vee'
+
     /**
      * 'attr_list' contains attributes for checking if some of them are affected
      * later. For instance, both of 'arrowhead' and 'dir' (edge style defined
@@ -8816,6 +9064,7 @@ function parseAttributeList() {
         name = 'arrows';
         value = { from: { enabled: true, type: arrowType } };
       }
+
       attr_list.push({ attr: attr, name: name, value: value });
       attr_names.push(name);
 
@@ -8831,228 +9080,27 @@ function parseAttributeList() {
     getToken();
   }
 
-  /**
-   * As explained in [1], graphviz has limitations for combining
-   * arrow[head|tail] and dir. If the attribute list includes 'dir',
-   * only following cases are supported:
-   *   1. both or none + arrowhead, arrowtail
-   *   2. forward + arrowhead (arrowtail is not affedted)
-   *   3. back + arrowtail (arrowhead is not affected)
-   * [1] https://www.graphviz.org/doc/info/attrs.html#h:undir_note
-   */
-  if (attr_names.includes('dir')) {
-    var idx = {}; // get index of 'arrows' and 'dir'
-    idx.arrows = {};
-    for (i = 0; i < attr_list.length; i++) {
-      if (attr_list[i].name === 'arrows') {
-        if (attr_list[i].value.to != null) {
-          idx.arrows.to = i;
-        } else if (attr_list[i].value.from != null) {
-          idx.arrows.from = i;
-        } else {
-          throw newSyntaxError('Invalid value of arrows');
+  attr_list = parseDirAttribute(attr_names, attr_list);
+
+  // parse 'penwidth'
+  var nof_attr_list;
+  if (attr_names.includes('penwidth')) {
+    var tmp_attr_list = [];
+
+    nof_attr_list = attr_list.length;
+    for (i = 0; i < nof_attr_list; i++) {
+      // exclude 'width' from attr_list if 'penwidth' exists
+      if (attr_list[i].name !== 'width') {
+        if (attr_list[i].name === 'penwidth') {
+          attr_list[i].name = 'width';
         }
-      } else if (attr_list[i].name === 'dir') {
-        idx.dir = i;
+        tmp_attr_list.push(attr_list[i]);
       }
     }
-    // first, add default arrow shape if it is not assigned to avoid error
-    var dir_type = attr_list[idx.dir].value;
-    if (!attr_names.includes('arrows')) {
-      if (dir_type === 'both') {
-        attr_list.push({
-          attr: attr_list[idx.dir].attr,
-          name: 'arrows',
-          value: { to: { enabled: true } }
-        });
-        idx.arrows.to = attr_list.length - 1;
-        attr_list.push({
-          attr: attr_list[idx.dir].attr,
-          name: 'arrows',
-          value: { from: { enabled: true } }
-        });
-        idx.arrows.from = attr_list.length - 1;
-      } else if (dir_type === 'forward') {
-        attr_list.push({
-          attr: attr_list[idx.dir].attr,
-          name: 'arrows',
-          value: { to: { enabled: true } }
-        });
-        idx.arrows.to = attr_list.length - 1;
-      } else if (dir_type === 'back') {
-        attr_list.push({
-          attr: attr_list[idx.dir].attr,
-          name: 'arrows',
-          value: { from: { enabled: true } }
-        });
-        idx.arrows.from = attr_list.length - 1;
-      } else if (dir_type === 'none') {
-        attr_list.push({
-          attr: attr_list[idx.dir].attr,
-          name: 'arrows',
-          value: ''
-        });
-        idx.arrows.to = attr_list.length - 1;
-      } else {
-        throw newSyntaxError('Invalid dir type "' + dir_type + '"');
-      }
-    }
-    var from_type;
-    var to_type;
-    // update 'arrows' attribute from 'dir'.
-    if (dir_type === 'both') {
-      // both of shapes of 'from' and 'to' are given
-      if (idx.arrows.to && idx.arrows.from) {
-        to_type = attr_list[idx.arrows.to].value.to.type;
-        from_type = attr_list[idx.arrows.from].value.from.type;
-        attr_list[idx.arrows.to] = {
-          attr: attr_list[idx.arrows.to].attr,
-          name: attr_list[idx.arrows.to].name,
-          value: {
-            to: { enabled: true, type: to_type },
-            from: { enabled: true, type: from_type }
-          }
-        };
-        attr_list.splice(idx.arrows.from, 1);
-        // shape of 'to' is assigned and use default to 'from'
-      } else if (idx.arrows.to) {
-        to_type = attr_list[idx.arrows.to].value.to.type;
-        from_type = 'arrow';
-        attr_list[idx.arrows.to] = {
-          attr: attr_list[idx.arrows.to].attr,
-          name: attr_list[idx.arrows.to].name,
-          value: {
-            to: { enabled: true, type: to_type },
-            from: { enabled: true, type: from_type }
-          }
-          // only shape of 'from' is assigned and use default for 'to'
-        };
-      } else if (idx.arrows.from) {
-        to_type = 'arrow';
-        from_type = attr_list[idx.arrows.from].value.from.type;
-        attr_list[idx.arrows.from] = {
-          attr: attr_list[idx.arrows.from].attr,
-          name: attr_list[idx.arrows.from].name,
-          value: {
-            to: { enabled: true, type: to_type },
-            from: { enabled: true, type: from_type }
-          }
-        };
-      }
-    } else if (dir_type === 'back') {
-      // given both of shapes, but use only 'from'
-      if (idx.arrows.to && idx.arrows.from) {
-        to_type = '';
-        from_type = attr_list[idx.arrows.from].value.from.type;
-        attr_list[idx.arrows.from] = {
-          attr: attr_list[idx.arrows.from].attr,
-          name: attr_list[idx.arrows.from].name,
-          value: {
-            to: { enabled: true, type: to_type },
-            from: { enabled: true, type: from_type }
-          }
-          // given shape of 'to', but does not use it
-        };
-      } else if (idx.arrows.to) {
-        to_type = '';
-        from_type = 'arrow';
-        idx.arrows.from = idx.arrows.to;
-        attr_list[idx.arrows.from] = {
-          attr: attr_list[idx.arrows.from].attr,
-          name: attr_list[idx.arrows.from].name,
-          value: {
-            to: { enabled: true, type: to_type },
-            from: { enabled: true, type: from_type }
-          }
-          // assign given 'from' shape
-        };
-      } else if (idx.arrows.from) {
-        to_type = '';
-        from_type = attr_list[idx.arrows.from].value.from.type;
-        attr_list[idx.arrows.to] = {
-          attr: attr_list[idx.arrows.from].attr,
-          name: attr_list[idx.arrows.from].name,
-          value: {
-            to: { enabled: true, type: to_type },
-            from: { enabled: true, type: from_type }
-          }
-        };
-      }
-      attr_list[idx.arrows.from] = {
-        attr: attr_list[idx.arrows.from].attr,
-        name: attr_list[idx.arrows.from].name,
-        value: {
-          from: {
-            enabled: true,
-            type: attr_list[idx.arrows.from].value.from.type
-          }
-        }
-      };
-    } else if (dir_type === 'none') {
-      var idx_arrow;
-      if (idx.arrows.to) {
-        idx_arrow = idx.arrows.to;
-      } else {
-        idx_arrow = idx.arrows.from;
-      }
-      attr_list[idx_arrow] = {
-        attr: attr_list[idx_arrow].attr,
-        name: attr_list[idx_arrow].name,
-        value: ''
-      };
-    } else if (dir_type === 'forward') {
-      // given both of shapes, but use only 'to'
-      if (idx.arrows.to && idx.arrows.from) {
-        to_type = attr_list[idx.arrows.to].value.to.type;
-        from_type = '';
-        attr_list[idx.arrows.to] = {
-          attr: attr_list[idx.arrows.to].attr,
-          name: attr_list[idx.arrows.to].name,
-          value: {
-            to: { enabled: true, type: to_type },
-            from: { enabled: true, type: from_type }
-          }
-          // assign given 'to' shape
-        };
-      } else if (idx.arrows.to) {
-        to_type = attr_list[idx.arrows.to].value.to.type;
-        from_type = '';
-        attr_list[idx.arrows.to] = {
-          attr: attr_list[idx.arrows.to].attr,
-          name: attr_list[idx.arrows.to].name,
-          value: {
-            to: { enabled: true, type: to_type },
-            from: { enabled: true, type: from_type }
-          }
-          // given shape of 'from', but does not use it
-        };
-      } else if (idx.arrows.from) {
-        to_type = 'arrow';
-        from_type = '';
-        idx.arrows.to = idx.arrows.from;
-        attr_list[idx.arrows.to] = {
-          attr: attr_list[idx.arrows.to].attr,
-          name: attr_list[idx.arrows.to].name,
-          value: {
-            to: { enabled: true, type: to_type },
-            from: { enabled: true, type: from_type }
-          }
-        };
-      }
-      attr_list[idx.arrows.to] = {
-        attr: attr_list[idx.arrows.to].attr,
-        name: attr_list[idx.arrows.to].name,
-        value: {
-          to: { enabled: true, type: attr_list[idx.arrows.to].value.to.type }
-        }
-      };
-    } else {
-      throw newSyntaxError('Invalid dir type "' + dir_type + '"');
-    }
-    // remove 'dir' attribute no need anymore
-    attr_list.splice(idx.dir, 1);
+    attr_list = tmp_attr_list;
   }
-  var nof_attr_list = attr_list.length;
+
+  nof_attr_list = attr_list.length;
   for (i = 0; i < nof_attr_list; i++) {
     setValue(attr_list[i].attr, attr_list[i].name, attr_list[i].value);
   }
@@ -13059,7 +13107,7 @@ var configureOptions = {
     hoverConnectedEdges: true,
     tooltipDelay: [300, 0, 1000, 25],
     zoomView: true,
-    zoomSpeed: 1
+    zoomSpeed: [1, 1, 1, 1]
   },
   manipulation: {
     enabled: false,
@@ -13205,7 +13253,7 @@ module.exports = function (it) {
 "use strict";
 
 var create = __webpack_require__(41);
-var descriptor = __webpack_require__(28);
+var descriptor = __webpack_require__(29);
 var setToStringTag = __webpack_require__(46);
 var IteratorPrototype = {};
 
@@ -13222,11 +13270,11 @@ module.exports = function (Constructor, NAME, next) {
 /* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(12);
+var dP = __webpack_require__(13);
 var anObject = __webpack_require__(20);
 var getKeys = __webpack_require__(26);
 
-module.exports = __webpack_require__(13) ? Object.defineProperties : function defineProperties(O, Properties) {
+module.exports = __webpack_require__(11) ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
   var keys = getKeys(Properties);
   var length = keys.length;
@@ -13295,7 +13343,7 @@ module.exports = function (index, length) {
 /* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var document = __webpack_require__(9).document;
+var document = __webpack_require__(10).document;
 module.exports = document && document.documentElement;
 
 
@@ -13364,7 +13412,7 @@ module.exports = function create(P, D) {
 /* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $export = __webpack_require__(11);
+var $export = __webpack_require__(12);
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 $export($export.S, 'Object', { create: __webpack_require__(41) });
 
@@ -13382,7 +13430,7 @@ module.exports = __webpack_require__(6).Object.keys;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 Object.keys(O)
-var toObject = __webpack_require__(30);
+var toObject = __webpack_require__(27);
 var $keys = __webpack_require__(26);
 
 __webpack_require__(68)('keys', function () {
@@ -13431,16 +13479,16 @@ module.exports = __webpack_require__(6).Symbol;
 "use strict";
 
 // ECMAScript 6 symbols shim
-var global = __webpack_require__(9);
+var global = __webpack_require__(10);
 var has = __webpack_require__(14);
-var DESCRIPTORS = __webpack_require__(13);
-var $export = __webpack_require__(11);
+var DESCRIPTORS = __webpack_require__(11);
+var $export = __webpack_require__(12);
 var redefine = __webpack_require__(64);
 var META = __webpack_require__(109).KEY;
 var $fails = __webpack_require__(22);
 var shared = __webpack_require__(44);
 var setToStringTag = __webpack_require__(46);
-var uid = __webpack_require__(29);
+var uid = __webpack_require__(30);
 var wks = __webpack_require__(8);
 var wksExt = __webpack_require__(48);
 var wksDefine = __webpack_require__(49);
@@ -13448,13 +13496,15 @@ var enumKeys = __webpack_require__(110);
 var isArray = __webpack_require__(111);
 var anObject = __webpack_require__(20);
 var isObject = __webpack_require__(21);
+var toObject = __webpack_require__(27);
 var toIObject = __webpack_require__(18);
 var toPrimitive = __webpack_require__(40);
-var createDesc = __webpack_require__(28);
+var createDesc = __webpack_require__(29);
 var _create = __webpack_require__(41);
 var gOPNExt = __webpack_require__(112);
 var $GOPD = __webpack_require__(70);
-var $DP = __webpack_require__(12);
+var $GOPS = __webpack_require__(50);
+var $DP = __webpack_require__(13);
 var $keys = __webpack_require__(26);
 var gOPD = $GOPD.f;
 var dP = $DP.f;
@@ -13470,7 +13520,7 @@ var SymbolRegistry = shared('symbol-registry');
 var AllSymbols = shared('symbols');
 var OPSymbols = shared('op-symbols');
 var ObjectProto = Object[PROTOTYPE];
-var USE_NATIVE = typeof $Symbol == 'function';
+var USE_NATIVE = typeof $Symbol == 'function' && !!$GOPS.f;
 var QObject = global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
@@ -13580,9 +13630,9 @@ if (!USE_NATIVE) {
   $DP.f = $defineProperty;
   __webpack_require__(69).f = gOPNExt.f = $getOwnPropertyNames;
   __webpack_require__(32).f = $propertyIsEnumerable;
-  __webpack_require__(50).f = $getOwnPropertySymbols;
+  $GOPS.f = $getOwnPropertySymbols;
 
-  if (DESCRIPTORS && !__webpack_require__(27)) {
+  if (DESCRIPTORS && !__webpack_require__(28)) {
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
@@ -13631,6 +13681,16 @@ $export($export.S + $export.F * !USE_NATIVE, 'Object', {
   getOwnPropertySymbols: $getOwnPropertySymbols
 });
 
+// Chrome 38 and 39 `Object.getOwnPropertySymbols` fails on primitives
+// https://bugs.chromium.org/p/v8/issues/detail?id=3443
+var FAILS_ON_PRIMITIVES = $fails(function () { $GOPS.f(1); });
+
+$export($export.S + $export.F * FAILS_ON_PRIMITIVES, 'Object', {
+  getOwnPropertySymbols: function getOwnPropertySymbols(it) {
+    return $GOPS.f(toObject(it));
+  }
+});
+
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
 $JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
   var S = $Symbol();
@@ -13669,10 +13729,10 @@ setToStringTag(global.JSON, 'JSON', true);
 /* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var META = __webpack_require__(29)('meta');
+var META = __webpack_require__(30)('meta');
 var isObject = __webpack_require__(21);
 var has = __webpack_require__(14);
-var setDesc = __webpack_require__(12).f;
+var setDesc = __webpack_require__(13).f;
 var id = 0;
 var isExtensible = Object.isExtensible || function () {
   return true;
@@ -14949,22 +15009,36 @@ __webpack_require__(49)('observable');
     function createDate (y, m, d, h, M, s, ms) {
         // can't just apply() to create a date:
         // https://stackoverflow.com/q/181348
-        var date = new Date(y, m, d, h, M, s, ms);
-
+        var date;
         // the date constructor remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0 && isFinite(date.getFullYear())) {
-            date.setFullYear(y);
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            date = new Date(y + 400, m, d, h, M, s, ms);
+            if (isFinite(date.getFullYear())) {
+                date.setFullYear(y);
+            }
+        } else {
+            date = new Date(y, m, d, h, M, s, ms);
         }
+
         return date;
     }
 
     function createUTCDate (y) {
-        var date = new Date(Date.UTC.apply(null, arguments));
-
+        var date;
         // the Date.UTC function remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0 && isFinite(date.getUTCFullYear())) {
-            date.setUTCFullYear(y);
+        if (y < 100 && y >= 0) {
+            var args = Array.prototype.slice.call(arguments);
+            // preserve leap years using a full 400 year cycle, then reset
+            args[0] = y + 400;
+            date = new Date(Date.UTC.apply(null, args));
+            if (isFinite(date.getUTCFullYear())) {
+                date.setUTCFullYear(y);
+            }
+        } else {
+            date = new Date(Date.UTC.apply(null, arguments));
         }
+
         return date;
     }
 
@@ -15066,7 +15140,7 @@ __webpack_require__(49)('observable');
 
     var defaultLocaleWeek = {
         dow : 0, // Sunday is the first day of the week.
-        doy : 6  // The week that contains Jan 1st is the first week of the year.
+        doy : 6  // The week that contains Jan 6th is the first week of the year.
     };
 
     function localeFirstDayOfWeek () {
@@ -15175,25 +15249,28 @@ __webpack_require__(49)('observable');
     }
 
     // LOCALES
+    function shiftWeekdays (ws, n) {
+        return ws.slice(n, 7).concat(ws.slice(0, n));
+    }
 
     var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
     function localeWeekdays (m, format) {
-        if (!m) {
-            return isArray(this._weekdays) ? this._weekdays :
-                this._weekdays['standalone'];
-        }
-        return isArray(this._weekdays) ? this._weekdays[m.day()] :
-            this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
+        var weekdays = isArray(this._weekdays) ? this._weekdays :
+            this._weekdays[(m && m !== true && this._weekdays.isFormat.test(format)) ? 'format' : 'standalone'];
+        return (m === true) ? shiftWeekdays(weekdays, this._week.dow)
+            : (m) ? weekdays[m.day()] : weekdays;
     }
 
     var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
     function localeWeekdaysShort (m) {
-        return (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
+        return (m === true) ? shiftWeekdays(this._weekdaysShort, this._week.dow)
+            : (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
     }
 
     var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
     function localeWeekdaysMin (m) {
-        return (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
+        return (m === true) ? shiftWeekdays(this._weekdaysMin, this._week.dow)
+            : (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
     }
 
     function handleStrictParse$1(weekdayName, format, strict) {
@@ -15942,13 +16019,13 @@ __webpack_require__(49)('observable');
                     weekdayOverflow = true;
                 }
             } else if (w.e != null) {
-                // local weekday -- counting starts from begining of week
+                // local weekday -- counting starts from beginning of week
                 weekday = w.e + dow;
                 if (w.e < 0 || w.e > 6) {
                     weekdayOverflow = true;
                 }
             } else {
-                // default to begining of week
+                // default to beginning of week
                 weekday = dow;
             }
         }
@@ -16542,7 +16619,7 @@ __webpack_require__(49)('observable');
             years = normalizedInput.year || 0,
             quarters = normalizedInput.quarter || 0,
             months = normalizedInput.month || 0,
-            weeks = normalizedInput.week || 0,
+            weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
             days = normalizedInput.day || 0,
             hours = normalizedInput.hour || 0,
             minutes = normalizedInput.minute || 0,
@@ -16846,7 +16923,7 @@ __webpack_require__(49)('observable');
                 ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
             };
         } else if (!!(match = isoRegex.exec(input))) {
-            sign = (match[1] === '-') ? -1 : (match[1] === '+') ? 1 : 1;
+            sign = (match[1] === '-') ? -1 : 1;
             duration = {
                 y : parseIso(match[2], sign),
                 M : parseIso(match[3], sign),
@@ -16888,7 +16965,7 @@ __webpack_require__(49)('observable');
     }
 
     function positiveMomentsDifference(base, other) {
-        var res = {milliseconds: 0, months: 0};
+        var res = {};
 
         res.months = other.month() - base.month() +
             (other.year() - base.year()) * 12;
@@ -16997,7 +17074,7 @@ __webpack_require__(49)('observable');
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() > localInput.valueOf();
         } else {
@@ -17010,7 +17087,7 @@ __webpack_require__(49)('observable');
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() < localInput.valueOf();
         } else {
@@ -17019,9 +17096,14 @@ __webpack_require__(49)('observable');
     }
 
     function isBetween (from, to, units, inclusivity) {
+        var localFrom = isMoment(from) ? from : createLocal(from),
+            localTo = isMoment(to) ? to : createLocal(to);
+        if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
+            return false;
+        }
         inclusivity = inclusivity || '()';
-        return (inclusivity[0] === '(' ? this.isAfter(from, units) : !this.isBefore(from, units)) &&
-            (inclusivity[1] === ')' ? this.isBefore(to, units) : !this.isAfter(to, units));
+        return (inclusivity[0] === '(' ? this.isAfter(localFrom, units) : !this.isBefore(localFrom, units)) &&
+            (inclusivity[1] === ')' ? this.isBefore(localTo, units) : !this.isAfter(localTo, units));
     }
 
     function isSame (input, units) {
@@ -17030,7 +17112,7 @@ __webpack_require__(49)('observable');
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(units || 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() === localInput.valueOf();
         } else {
@@ -17040,11 +17122,11 @@ __webpack_require__(49)('observable');
     }
 
     function isSameOrAfter (input, units) {
-        return this.isSame(input, units) || this.isAfter(input,units);
+        return this.isSame(input, units) || this.isAfter(input, units);
     }
 
     function isSameOrBefore (input, units) {
-        return this.isSame(input, units) || this.isBefore(input,units);
+        return this.isSame(input, units) || this.isBefore(input, units);
     }
 
     function diff (input, units, asFloat) {
@@ -17221,62 +17303,130 @@ __webpack_require__(49)('observable');
         return this._locale;
     }
 
+    var MS_PER_SECOND = 1000;
+    var MS_PER_MINUTE = 60 * MS_PER_SECOND;
+    var MS_PER_HOUR = 60 * MS_PER_MINUTE;
+    var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
+
+    // actual modulo - handles negative numbers (for dates before 1970):
+    function mod$1(dividend, divisor) {
+        return (dividend % divisor + divisor) % divisor;
+    }
+
+    function localStartOfDate(y, m, d) {
+        // the date constructor remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return new Date(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return new Date(y, m, d).valueOf();
+        }
+    }
+
+    function utcStartOfDate(y, m, d) {
+        // Date.UTC remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return Date.UTC(y, m, d);
+        }
+    }
+
     function startOf (units) {
+        var time;
         units = normalizeUnits(units);
-        // the following switch intentionally omits break keywords
-        // to utilize falling through the cases.
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
+            return this;
+        }
+
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
         switch (units) {
             case 'year':
-                this.month(0);
-                /* falls through */
+                time = startOfDate(this.year(), 0, 1);
+                break;
             case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3, 1);
+                break;
             case 'month':
-                this.date(1);
-                /* falls through */
+                time = startOfDate(this.year(), this.month(), 1);
+                break;
             case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday());
+                break;
             case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1));
+                break;
             case 'day':
             case 'date':
-                this.hours(0);
-                /* falls through */
+                time = startOfDate(this.year(), this.month(), this.date());
+                break;
             case 'hour':
-                this.minutes(0);
-                /* falls through */
+                time = this._d.valueOf();
+                time -= mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR);
+                break;
             case 'minute':
-                this.seconds(0);
-                /* falls through */
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_MINUTE);
+                break;
             case 'second':
-                this.milliseconds(0);
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_SECOND);
+                break;
         }
 
-        // weeks are a special case
-        if (units === 'week') {
-            this.weekday(0);
-        }
-        if (units === 'isoWeek') {
-            this.isoWeekday(1);
-        }
-
-        // quarters are also special
-        if (units === 'quarter') {
-            this.month(Math.floor(this.month() / 3) * 3);
-        }
-
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
         return this;
     }
 
     function endOf (units) {
+        var time;
         units = normalizeUnits(units);
-        if (units === undefined || units === 'millisecond') {
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
             return this;
         }
 
-        // 'date' is an alias for 'day', so it should be considered as such.
-        if (units === 'date') {
-            units = 'day';
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+        switch (units) {
+            case 'year':
+                time = startOfDate(this.year() + 1, 0, 1) - 1;
+                break;
+            case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1;
+                break;
+            case 'month':
+                time = startOfDate(this.year(), this.month() + 1, 1) - 1;
+                break;
+            case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1;
+                break;
+            case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1;
+                break;
+            case 'day':
+            case 'date':
+                time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
+                break;
+            case 'hour':
+                time = this._d.valueOf();
+                time += MS_PER_HOUR - mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1;
+                break;
+            case 'minute':
+                time = this._d.valueOf();
+                time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
+                break;
+            case 'second':
+                time = this._d.valueOf();
+                time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
+                break;
         }
 
-        return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
+        return this;
     }
 
     function valueOf () {
@@ -17982,10 +18132,14 @@ __webpack_require__(49)('observable');
 
         units = normalizeUnits(units);
 
-        if (units === 'month' || units === 'year') {
-            days   = this._days   + milliseconds / 864e5;
+        if (units === 'month' || units === 'quarter' || units === 'year') {
+            days = this._days + milliseconds / 864e5;
             months = this._months + daysToMonths(days);
-            return units === 'month' ? months : months / 12;
+            switch (units) {
+                case 'month':   return months;
+                case 'quarter': return months / 3;
+                case 'year':    return months / 12;
+            }
         } else {
             // handle milliseconds separately because of floating point math errors (issue #1867)
             days = this._days + Math.round(monthsToDays(this._months));
@@ -18028,6 +18182,7 @@ __webpack_require__(49)('observable');
     var asDays         = makeAs('d');
     var asWeeks        = makeAs('w');
     var asMonths       = makeAs('M');
+    var asQuarters     = makeAs('Q');
     var asYears        = makeAs('y');
 
     function clone$1 () {
@@ -18219,6 +18374,7 @@ __webpack_require__(49)('observable');
     proto$2.asDays         = asDays;
     proto$2.asWeeks        = asWeeks;
     proto$2.asMonths       = asMonths;
+    proto$2.asQuarters     = asQuarters;
     proto$2.asYears        = asYears;
     proto$2.valueOf        = valueOf$1;
     proto$2._bubble        = bubble;
@@ -18263,7 +18419,7 @@ __webpack_require__(49)('observable');
     // Side effect imports
 
 
-    hooks.version = '2.22.2';
+    hooks.version = '2.24.0';
 
     setHookCallback(createLocal);
 
@@ -18304,7 +18460,7 @@ __webpack_require__(49)('observable');
         TIME: 'HH:mm',                                  // <input type="time" />
         TIME_SECONDS: 'HH:mm:ss',                       // <input type="time" step="1" />
         TIME_MS: 'HH:mm:ss.SSS',                        // <input type="time" step="0.001" />
-        WEEK: 'YYYY-[W]WW',                             // <input type="week" />
+        WEEK: 'GGGG-[W]WW',                             // <input type="week" />
         MONTH: 'YYYY-MM'                                // <input type="month" />
     };
 
@@ -23100,9 +23256,9 @@ module.exports = function defineProperty(it, key, desc) {
 /* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $export = __webpack_require__(11);
+var $export = __webpack_require__(12);
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !__webpack_require__(13), 'Object', { defineProperty: __webpack_require__(12).f });
+$export($export.S + $export.F * !__webpack_require__(11), 'Object', { defineProperty: __webpack_require__(13).f });
 
 
 /***/ }),
@@ -25217,7 +25373,7 @@ module.exports = __webpack_require__(6).Object.assign;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.1 Object.assign(target, source)
-var $export = __webpack_require__(11);
+var $export = __webpack_require__(12);
 
 $export($export.S + $export.F, 'Object', { assign: __webpack_require__(143) });
 
@@ -25229,10 +25385,11 @@ $export($export.S + $export.F, 'Object', { assign: __webpack_require__(143) });
 "use strict";
 
 // 19.1.2.1 Object.assign(target, source, ...)
+var DESCRIPTORS = __webpack_require__(11);
 var getKeys = __webpack_require__(26);
 var gOPS = __webpack_require__(50);
 var pIE = __webpack_require__(32);
-var toObject = __webpack_require__(30);
+var toObject = __webpack_require__(27);
 var IObject = __webpack_require__(59);
 var $assign = Object.assign;
 
@@ -25258,7 +25415,10 @@ module.exports = !$assign || __webpack_require__(22)(function () {
     var length = keys.length;
     var j = 0;
     var key;
-    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+    while (length > j) {
+      key = keys[j++];
+      if (!DESCRIPTORS || isEnum.call(S, key)) T[key] = S[key];
+    }
   } return T;
 } : $assign;
 
@@ -25422,7 +25582,7 @@ module.exports = __webpack_require__(6).Object.getPrototypeOf;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 Object.getPrototypeOf(O)
-var toObject = __webpack_require__(30);
+var toObject = __webpack_require__(27);
 var $getPrototypeOf = __webpack_require__(66);
 
 __webpack_require__(68)('getPrototypeOf', function () {
@@ -25451,7 +25611,7 @@ module.exports = __webpack_require__(6).Object.setPrototypeOf;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.19 Object.setPrototypeOf(O, proto)
-var $export = __webpack_require__(11);
+var $export = __webpack_require__(12);
 $export($export.S, 'Object', { setPrototypeOf: __webpack_require__(150).set });
 
 
@@ -28757,7 +28917,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _keys = __webpack_require__(10);
+var _keys = __webpack_require__(9);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -30344,7 +30504,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _keys = __webpack_require__(10);
+var _keys = __webpack_require__(9);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -34996,6 +35156,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _keys = __webpack_require__(9);
+
+var _keys2 = _interopRequireDefault(_keys);
+
 var _classCallCheck2 = __webpack_require__(0);
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -35171,6 +35335,10 @@ var SelectionHandler = function () {
         // For the time being, restrict this functionality to
         // just the click event.
         properties.items = this.getClickedItems(pointer);
+      }
+
+      if (event.controlEdge !== undefined) {
+        properties.controlEdge = event.controlEdge;
       }
 
       this.body.emitter.emit(eventType, properties);
@@ -35733,7 +35901,14 @@ var SelectionHandler = function () {
       }
 
       if (object !== undefined) {
-        hoverChanged = hoverChanged || this.emitHoverEvent(event, pointer, object);
+        var hoveredEdgesCount = (0, _keys2['default'])(this.hoverObj.edges).length;
+        var hoveredNodesCount = (0, _keys2['default'])(this.hoverObj.nodes).length;
+        var newOnlyHoveredEdge = object instanceof Edge && hoveredEdgesCount === 0 && hoveredNodesCount === 0;
+
+        if (hoverChanged || newOnlyHoveredEdge) {
+          hoverChanged = this.emitHoverEvent(event, pointer, object);
+        }
+
         if (object instanceof Node && this.options.hoverConnectedEdges === true) {
           this._hoverConnectedEdges(object);
         }
@@ -36009,7 +36184,7 @@ var _typeof2 = __webpack_require__(7);
 
 var _typeof3 = _interopRequireDefault(_typeof2);
 
-var _keys = __webpack_require__(10);
+var _keys = __webpack_require__(9);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -39113,7 +39288,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _keys = __webpack_require__(10);
+var _keys = __webpack_require__(9);
 
 var _keys2 = _interopRequireDefault(_keys);
 
@@ -40308,6 +40483,27 @@ var ManipulationSystem = function () {
     key: '_dragControlNode',
     value: function _dragControlNode(event) {
       var pointer = this.body.functions.getPointer(event.center);
+
+      var pointerObj = this.selectionHandler._pointerToPositionObject(pointer);
+      // remember the edge id
+      var connectFromId = undefined;
+      if (this.temporaryIds.edges[0] !== undefined) {
+        connectFromId = this.body.edges[this.temporaryIds.edges[0]].fromId;
+      }
+      // get the overlapping node but NOT the temporary node;
+      var overlappingNodeIds = this.selectionHandler._getAllNodesOverlappingWith(pointerObj);
+      var node = undefined;
+      for (var i = overlappingNodeIds.length - 1; i >= 0; i--) {
+        // if the node id is NOT a temporary node, accept the node.
+        if (this.temporaryIds.nodes.indexOf(overlappingNodeIds[i]) === -1) {
+          node = this.body.nodes[overlappingNodeIds[i]];
+          break;
+        }
+      }
+
+      event.controlEdge = { from: connectFromId, to: node ? node.id : undefined };
+      this.selectionHandler._generateClickEvent('controlNodeDragging', event, pointer);
+
       if (this.temporaryIds.nodes[0] !== undefined) {
         var targetNode = this.body.nodes[this.temporaryIds.nodes[0]]; // there is only one temp node in the add edge mode.
         targetNode.x = this.canvas._XconvertDOMtoCanvas(pointer.x);
@@ -40365,6 +40561,9 @@ var ManipulationSystem = function () {
           }
         }
       }
+
+      event.controlEdge = { from: connectFromId, to: node ? node.id : undefined };
+      this.selectionHandler._generateClickEvent('controlNodeDragEnd', event, pointer);
 
       // No need to do _generateclickevent('dragEnd') here, the regular dragEnd event fires.
       this.body.emitter.emit('_redraw');
