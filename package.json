@@ -1,6 +1,6 @@
 {
   "name": "visjs-network-juice",
-  "version": "4.23.2",
+  "version": "4.23.3",
   "description": "A dynamic, browser-based network visualization library forked from visjs community.  Adds the ability to rotate nodes.",
   "homepage": "http://visjs.org/",
   "license": "(Apache-2.0 OR MIT)",
